@@ -1,10 +1,10 @@
 /* ==========================================
-   STYLE.CSS - PAH Architecture Demo v2.0
-   Modern, Clean, and Structured
+   STYLE.CSS - PAH Architecture Demo v3.0
+   Stunning Modern Design - Clean & Professional
    ========================================== */
- 
+
 /* ------------------------------------------
-   GLOBAL RESETS & BASE TYPOGRAPHY
+   GLOBAL RESETS & BASE TYPOGRAPHY (v3)
    ------------------------------------------ */
 * {
     margin: 0;
@@ -13,267 +13,296 @@
 }
 
 html, body {
-    font-family: 'Nunito Sans', sans-serif; /* Modern, clean font */
-    background: #f8fafc; /* Very light background */
-    color: #34495e; /* Darker, professional text color */
+    font-family: 'Inter', sans-serif; /* Premium, modern font */
+    background: #f0f2f5; /* Very light, sophisticated background */
+    color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    line-height: 1.7;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
+#app-container {
+    width: 1250px; /* Wider container v3 */
+    max-width: 97%;
+    margin: 30px 0 40px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.09); /* Refined shadow v3 */
+    overflow: hidden; /* Clip rounded corners */
+    display: flex;
+    flex-direction: column;
+}
+
+
 /* ------------------------------------------
-   HEADER & FOOTER (v2 Styles)
+   HEADER & FOOTER (v3 Styles)
    ------------------------------------------ */
-.header-v2, .footer-v2 {
-    text-align: center;
-    padding: 30px 20px;
-    width: 100%;
+#header-v3 {
+    background: #fff;
+    padding: 45px 40px 30px;
+    text-align: left;
+    border-bottom: 1px solid #e8e8e8; /* Very light border */
 }
 
-.header-v2 {
-    margin-bottom: 30px;
+#header-v3 h1 {
+    font-size: 2.9rem; /* Larger heading v3 */
+    font-weight: 700;
+    color: #2d3436; /* Darker, professional heading text */
+    margin-bottom: 8px;
+    letter-spacing: -0.015em;
 }
 
-.header-v2 h1 {
-    font-size: 2.8em;
-    font-weight: 800; /* Very bold heading */
-    color: #2c3e50; /* Darker heading color */
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-}
-
-.subtitle-v2 {
-    font-size: 1.2em;
-    color: #7f8c8d; /* Muted subtitle color */
+.subtitle-v3 {
+    font-size: 1.2rem;
+    color: #636e72; /* Muted subtitle v3 */
     font-weight: 400;
 }
 
-.footer-v2 {
-    margin-top: 50px;
-    padding-top: 25px;
-    border-top: 1px solid #e0e6ed; /* Subtle border */
-    color: #95a5a6; /* Lighter footer text */
-    font-size: 0.95em;
-}
-
-
-/* ------------------------------------------
-   MAIN CONTAINER & SECTIONS (v2 Layout)
-   ------------------------------------------ */
-#mainContainer-v2 {
-    width: 1200px; /* Wider container */
-    max-width: 96%;
-    background-color: #fff; /* White main container */
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); /* Lighter, softer shadow */
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; /* Stretch sections to container width */
-}
-
-#vizSection {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
-}
-
-#controls-v2 {
+#footer-v3 {
+    padding: 25px 40px;
     text-align: center;
-    margin-bottom: 20px;
-}
-
-#vizArea-v2 {
-    background-color: #f0f4f7; /* Very light visualization area */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.02); /* Very subtle inset */
-    border: 1px solid #e0e6ed; /* Light border */
-    padding: 25px; /* Add padding inside viz area */
-}
-
-#pahViz-v2 {
-    width: 100%;
-    height: 650px; /* Slightly reduced height */
-    display: block; /* Ensure SVG takes full width */
-}
-
-#infoSection-v2 {
-    padding: 20px;
-    background-color: #edf2f7; /* Light info section background */
-    border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.02); /* Very subtle shadow */
-    border: 1px solid #e0e6ed; /* Light border */
-}
-
-#infoBox-v2 {
-    font-size: 1.05em;
-    color: #546e7a; /* Muted info text color */
-    text-align: left;
-    line-height: 1.8;
+    color: #777;
+    font-size: 0.9rem;
+    border-top: 1px solid #e8e8e8; /* Very light border */
+    background: #f9f9f9; /* Slightly darker footer background */
 }
 
 
 /* ------------------------------------------
-   BUTTON STYLES (v2)
+   MAIN CONTENT & SECTIONS (v3 Layout)
    ------------------------------------------ */
-#trainBtn-v2 {
-    padding: 16px 28px;
+#main-content-v3 {
+    display: flex;
+    padding: 40px;
+}
+
+#visualization-section-v3 {
+    flex: 2; /* Visualization takes more space */
+    padding-right: 30px;
+}
+
+#viz-controls-v3 {
+    text-align: left; /* Align button left in viz section */
+    margin-bottom: 25px;
+}
+
+#architecture-viz-v3 {
+    background-color: #fcfcfc; /* Even lighter viz area background v3 */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03); /* Very subtle shadow v3 */
+    border: 1px solid #eee; /* Very light border v3 */
+    padding: 30px; /* Padding inside viz area v3 */
+}
+
+#pah-svg-v3 {
+    width: 100%;
+    height: 700px; /* Height for SVG v3 */
+    display: block;
+}
+
+
+#info-panel-v3 {
+    flex: 1; /* Info panel takes less space */
+    padding-left: 30px;
+    border-left: 1px solid #eee; /* Subtle separator line v3 */
+    text-align: left;
+}
+
+#instruction-box-v3 {
+    background-color: #f9f9f9; /* Light instruction box v3 */
+    border-radius: 12px;
+    padding: 22px;
+    font-size: 1.05rem;
+    color: #555;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.02); /* Very subtle shadow v3 */
+    border: 1px solid #eee; /* Very light border v3 */
+    line-height: 1.7;
+}
+
+#details-box-v3 {
+    background-color: #f9f9f9; /* Light details box v3 */
+    border-radius: 12px;
+    padding: 22px;
+    font-size: 1rem;
+    color: #666;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.02); /* Very subtle shadow v3 */
+    border: 1px solid #eee; /* Very light border v3 */
+    min-height: 150px; /* Minimum height for details box */
+}
+
+#component-info-v3 {
+    line-height: 1.7;
+}
+
+
+/* ------------------------------------------
+   BUTTON STYLES (v3 - Modern & Refined)
+   ------------------------------------------ */
+#train-task-btn-v3 {
+    padding: 15px 30px;
     border: none;
-    border-radius: 10px;
-    background-color: #3498db; /* Brighter, modern button blue */
+    border-radius: 12px;
+    background-color: #3498db; /* Vibrant button blue v3 */
     color: #fff;
-    font-size: 1.1em;
+    font-size: 1.15rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1); /* More defined shadow v3 */
     outline: none;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
+    -webkit-appearance: none; /* Reset default button styling */
+    -moz-appearance: none;
+    appearance: none;
 }
 
-#trainBtn-v2:hover {
-    background-color: #2980b9; /* Darker blue on hover */
+#train-task-btn-v3:hover {
+    background-color: #2980b9; /* Darker blue on hover v3 */
     transform: translateY(-2px);
-    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14); /* More pronounced hover shadow v3 */
 }
 
-#trainBtn-v2:active {
+#train-task-btn-v3:active {
     transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1); /* Shadow when active v3 */
 }
 
 
 /* ------------------------------------------
-   ARCHITECTURE SVG STYLES (v2 - Cleaner Boxes)
+   ARCHITECTURE SVG STYLES (v3 - Elegant Boxes)
    ------------------------------------------ */
-.compBox-v2 {
-    rx: 12px;
-    ry: 12px;
-    stroke: #ced4da; /* Very light box stroke */
+.comp-box-v3 {
+    rx: 14px;
+    ry: 14px;
+    stroke: #d8d8d8; /* Very subtle box stroke v3 */
     stroke-width: 2px;
     fill: #fff;
     fill-opacity: 0.99;
-    transition: fill-opacity 0.2s, stroke 0.2s;
-    cursor: default;
+    transition: fill-opacity 0.2s, stroke 0.2s, transform 0.2s;
+    cursor: pointer; /* Pointer cursor for boxes */
 }
 
-.compBox-v2:hover {
+.comp-box-v3:hover {
     fill-opacity: 1;
-    stroke: #adb5bd; /* Slightly darker stroke on hover */
+    stroke: #c0c0c0; /* Slightly darker stroke on hover v3 */
+    transform: scale(1.02); /* Subtle scale on hover for feedback */
 }
 
-.backboneGrad-v2 {
-    fill: url(#backboneGradient-v2);
+.backbone-grad-v3 {
+    fill: url(#backboneGradient-v3);
 }
 
-.hyperGrad-v2 {
-    fill: url(#hyperGradient-v2);
+.hyper-grad-v3 {
+    fill: url(#hyperGradient-v3);
 }
 
-.headGrad-v2 {
-    fill: url(#headGradient-v2);
+.head-grad-v3 {
+    fill: url(#headGradient-v3);
 }
 
-.compLabel-v2 {
+.comp-label-v3 {
     pointer-events: none;
-    fill: #495057; /* Darker label text */
-    font-size: 1.1em;
-    font-weight: 600;
-    text-shadow: 0 0 1px rgba(255,255,255,0.7); /* Subtle text shadow */
+    fill: #444; /* Darker label text v3 */
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-shadow: 0 0 1px rgba(255,255,255,0.7);
+    user-select: none; /* Prevent text selection */
 }
 
 
 /* ------------------------------------------
-   PROTOTYPES (v2 - Larger, Grid Layout)
+   PROTOTYPES (v3 - Larger & Enhanced)
    ------------------------------------------ */
-.protoImage-v2 {
-    width: 60px;  /* Larger prototype images */
-    height: 60px;
+.proto-image-v3 {
+    width: 70px;  /* Even larger prototypes v3 */
+    height: 70px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07); /* Softer shadow */
-    filter: grayscale(80%); /* Default grayscale filter */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.09); /* More defined shadow v3 */
+    filter: grayscale(70%); /* Default grayscale v3 */
 }
 
-.protoImage-v2:hover {
+.proto-image-v3:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); /* More pronounced hover shadow */
-    filter: grayscale(0%); /* Remove grayscale on hover */
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15); /* Stronger hover shadow v3 */
+    filter: grayscale(0%); /* Remove grayscale on hover v3 */
 }
 
 
 /* ------------------------------------------
-   ARROWS & LINES (v2 - Refined)
+   ARROWS & LINES (v3 - Refined & Clear)
    ------------------------------------------ */
 line, path {
     fill: none;
-    stroke-width: 2.4px; /* Slightly thicker lines */
+    stroke-width: 2.6px; /* Slightly thicker lines v3 */
 }
 
-.archEdge-v2 {
-    opacity: 0.85; /* Slightly more transparent lines */
+.arch-edge-v3 {
+    opacity: 0.8; /* Slightly more transparent edges v3 */
 }
 
-.fwdArrow-v2 {
-    stroke: #777; /* Medium grey forward arrows */
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-    animation: flowFwd-v2 1.2s ease-out forwards; /* Slightly slower animation */
-    marker-end: url(#markerFwd-v2);
+.fwd-arrow-v3 {
+    stroke: #666; /* Dark grey forward arrows v3 */
+    stroke-dasharray: 2200; /* Longer dash array v3 */
+    stroke-dashoffset: 2200;
+    animation: flowFwd-v3 1.4s ease-out forwards; /* Slightly slower animation v3 */
+    marker-end: url(#markerFwd-v3);
 }
 
-@keyframes flowFwd-v2 {
+@keyframes flowFwd-v3 {
     to { stroke-dashoffset: 0; }
 }
 
-.weightArrow-v2 {
-    stroke: #55a868; /* More vibrant green for weights */
-    marker-end: url(#markerGreen-v2);
+.weight-arrow-v3 {
+    stroke: #4caf50; /* Green weight arrows v3 */
+    marker-end: url(#markerGreen-v3);
 }
 
-.gradArrow-v2 {
-    stroke: #e74c3c; /* More vibrant red for gradients */
-    transition: stroke-dashoffset 0.4s ease-in-out; /* Faster gradient animation */
+.grad-arrow-v3 {
+    stroke: #e74c3c; /* Vibrant red gradient arrows v3 */
+    transition: stroke-dashoffset 0.4s ease-in-out;
 }
 
-.solidGrad-v2 {
+.solid-grad-v3 {
     stroke-dasharray: none;
 }
 
-.dashedGrad-v2 {
-    stroke-dasharray: 7, 5; /* Slightly wider dashes */
-    stroke-width: 2.6px;
-    opacity: 0.8;
+.dashed-grad-v3 {
+    stroke-dasharray: 8, 6; /* Wider dashes v3 */
+    stroke-width: 2.8px;
+    opacity: 0.75;
 }
 
 
 /* ------------------------------------------
-   LOSS CIRCLES (v2 - Improved Style)
+   LOSS CIRCLES (v3 - Improved Visuals)
    ------------------------------------------ */
-.lossCircle-v2 {
-    fill: #e74c3c; /* Vibrant red loss circles */
+.loss-circle-v3 {
+    fill: #e74c3c; /* Vibrant red loss circles v3 */
     stroke: #fff;
-    stroke-width: 3px; /* Thicker stroke */
+    stroke-width: 3.5px; /* Thicker stroke v3 */
     cursor: pointer;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1); /* More defined shadow */
+    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.12); /* More defined shadow v3 */
 }
 
-.lossCircle-v2:hover {
-    transform: scale(1.15); /* Slightly larger hover scale */
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18); /* More pronounced hover shadow */
+.loss-circle-v3:hover {
+    transform: scale(1.15);
+    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.2); /* Stronger hover shadow v3 */
 }
 
-.lossLabel-v2 {
+.loss-label-v3 {
     fill: #fff;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 1.1rem; /* Slightly larger loss labels v3 */
     pointer-events: none;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7); /* Stronger text shadow */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.75); /* Stronger text shadow v3 */
+    user-select: none; /* Prevent text selection */
 }

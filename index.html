@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>PAH Architecture - Polished Demo</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Interactive demo of the Prototype-Augmented Hypernetworks (PAH) architecture for continual learning." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAH Architecture - Interactive Demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 
-<h1>PAH Architecture - Interactive & Polished</h1>
+    <header>
+        <h1>Prototype-Augmented Hypernetworks (PAH)</h1>
+        <p class="subtitle">Interactive Visualization of the PAH Architecture for Continual Learning</p>
+    </header>
 
-<div id="mainContainer">
-  <div id="vizContainer">
-    <svg id="pahViz"></svg>
-  </div>
-  <button id="trainBtn">Train Next Task</button>
-  <div id="infoBox">Press “Train Next Task” to add prototypes, see augmentations, and watch data/gradient flow!</div>
-</div>
+    <main id="mainContainer">
+        <div id="vizContainer">
+            <svg id="pahViz"></svg>
+        </div>
+        <div class="controls">
+            <button id="trainBtn">Train Next Task</button>
+        </div>
+        <div id="infoBox">Click "Train Next Task" to incrementally add prototypes, observe augmentations, and visualize the data and gradient flow through the PAH architecture.</div>
+    </main>
 
-<script src="app.js"></script>
+    <footer>
+        <p>© 2024 PAH Demo. Visualization by [Your Name/Organization]. Based on Prototype-Augmented Hypernetworks (PAH) Research.</p>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>

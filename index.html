@@ -2,188 +2,367 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PAH Circle Animation</title>
+  <title>PAH Interactive Animation</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      background: #eef2f7;
-      font-family: sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      background-color: #f2f4f8;
+      font-family: sans-serif;
       color: #333;
+      padding: 20px;
     }
     h1 {
       margin-bottom: 10px;
     }
-    #viz-container {
-      background: white;
-      width: 800px;
-      max-width: 90%;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    #container {
+      width: 960px;
+      max-width: 95%;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
       padding: 20px;
       text-align: center;
+    }
+    #info {
+      margin-top: 12px;
+      background: #e3f2fd;
+      padding: 12px;
+      border-radius: 8px;
+      min-height: 30px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #1976d2;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0d47a1;
     }
     #viz {
       width: 100%;
       height: 600px;
+      background: #fafcff;
+      border-radius: 12px;
     }
-    .btn {
-      background: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 14px;
-      font-size: 14px;
+    .hypernode, .classifier {
+      stroke: #666;
+      stroke-width: 1;
       cursor: pointer;
-      margin: 10px 0;
-    }
-    .btn:hover {
-      background: #0d47a1;
-    }
-    .info {
-      background: #e3f2fd;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 10px;
-      min-height: 30px;
-    }
-    /* Circle ring behind each prototype */
-    .ring {
       transition: transform 0.3s;
-      cursor: pointer;
     }
-    .ring:hover {
+    .hypernode:hover, .classifier:hover {
       transform: scale(1.1);
     }
-    /* CIFAR images */
-    .proto-img {
-      pointer-events: none; /* so clicks go to ring group, not the image */
+    .protoImage {
+      cursor: pointer;
+      transition: transform 0.4s, filter 0.4s;
+    }
+    .protoImage:hover {
+      transform: scale(1.15);
+    }
+    line {
+      stroke: #999;
+      stroke-width: 2;
+      opacity: 0.8;
+    }
+    text {
+      pointer-events: none;
+      font-family: sans-serif;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-<h1>Interactive Circle Animation (PAH Prototypes)</h1>
-
-<div id="viz-container">
+<h1>Interactive PAH Animation: Prototypes + Hypernet + Classifier</h1>
+<div id="container">
   <svg id="viz"></svg>
-  <button class="btn" id="nextTaskBtn">Train Next Task</button>
-  <div class="info" id="infoBox">Click a prototype ring for details.</div>
+  <button id="nextTaskBtn">Train Next Task</button>
+  <div id="info">Welcome! Press "Train Next Task" to see new prototypes & transformations.</div>
 </div>
 
 <script>
-  // ====== Setup SVG & Basic Vars ======
-  const width = 800;
-  const height = 600;
-  const svg = d3.select('#viz')
-    .attr('viewBox', [0, 0, width, height]);
+// ========================================================
+// This animation tries to show how the prototypes (actual images)
+// evolve over tasks, along with representational drift. We do:
+// 1) Each time we "train" a new task, we add a few new prototype images.
+// 2) We also randomly apply augmentation-like transformations to existing prototypes,
+//    simulating they are shifting in the latent space or being augmented.
+// 3) We show lines from each prototype to the hypernetwork in the center,
+//    and from there to the classifier on the right.
+// 4) Clicking images or nodes updates the info box.
+// ========================================================
 
-  // We'll keep an array of image objects (CIFAR-ish)
-  // Each object has: url, label. We'll place them in a circle layout.
-  const prototypes = [
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/dog4.png',   label: 'Proto: Dog' },
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/airplane4.png', label: 'Proto: Airplane' },
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/cat3.png',  label: 'Proto: Cat' },
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/deer4.png', label: 'Proto: Deer' },
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/ship4.png', label: 'Proto: Ship' },
-    { url: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/frog4.png', label: 'Proto: Frog' },
-  ];
+const width = 960;
+const height = 600;
 
-  let taskNumber = 1;
+const svg = d3.select('#viz')
+  .attr('viewBox', [0,0,width,height]);
 
-  // ====== Color scale for ring backgrounds ======
-  const colorScale = d3.scaleOrdinal(d3.schemeSet2);
+// We'll define a single hypernetwork node in the center, classifier node on the far right
+const hyperX = width * 0.45;
+const hyperY = height * 0.5;
 
-  // ====== Setup Groups for each prototype (circle ring + image) ======
-  // We'll create a group <g> for each prototype and store references for transitions.
-  // Circle ring behind each image, then the image on top.
-  // We'll place them in a radial layout.
+const classX = width * 0.8;
+const classY = height * 0.5;
 
-  // Create a container group for all prototypes
-  const protoG = svg.append('g').attr('class', 'all-prototypes');
+// We'll store tasks, each with a few CIFAR-like images.
+// For demonstration, we use 3 images per task.
+// We'll do 4 tasks total.
 
-  // For convenience, create an array of groups
-  const ringGroups = protoG.selectAll('g.ringgroup')
-    .data(prototypes)
-    .enter()
-    .append('g')
-    .attr('class', 'ringgroup');
+const tasks = [
+  [
+    { label: 'Task1_Dog',    img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/dog4.png' },
+    { label: 'Task1_Cat',    img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/cat1.png' },
+    { label: 'Task1_Frog',   img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/frog.png' }
+  ],
+  [
+    { label: 'Task2_Ship',   img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/ship2.png' },
+    { label: 'Task2_Bird',   img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/bird4.png' },
+    { label: 'Task2_Deer',   img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/deer4.png' }
+  ],
+  [
+    { label: 'Task3_Airplane',  img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/airplane4.png' },
+    { label: 'Task3_Car',       img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/automobile1.png' },
+    { label: 'Task3_Dog',       img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/dog3.png' }
+  ],
+  [
+    { label: 'Task4_Cat',   img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/cat2.png' },
+    { label: 'Task4_Truck', img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/truck3.png' },
+    { label: 'Task4_Frog',  img: 'https://www.cs.toronto.edu/~kriz/cifar-10-sample/frog2.png' }
+  ]
+];
 
-  // Now each group has a background ring (circle)
-  ringGroups.append('circle')
-    .attr('class', 'ring')
-    .attr('r', 40)
-    .attr('fill', (d,i) => colorScale(i))
-    .attr('cx', width/2)
-    .attr('cy', height/2)
-    .attr('opacity', 0.8)
-    .on('click', function(e, d) {
-      // Show info about the clicked prototype
-      d3.select('#infoBox')
-        .text(`Task ${taskNumber}: ${d.label} triggered dynamic classifier weights!`);
-    });
+// We'll keep a global array of prototypes that are currently shown.
+// Each prototype has: x,y, label, img, plus some filter params.
+let prototypes = [];
+// We'll keep track of how many tasks have been introduced.
+let currentTaskIndex = 0;
 
-  // Then we place the image on top of that circle
-  ringGroups.append('svg:image')
-    .attr('class', 'proto-img')
+// ========== Add Hypernetwork Node ============
+const hyperG = svg.append('g');
+hyperG.append('circle')
+  .attr('class','hypernode')
+  .attr('cx', hyperX)
+  .attr('cy', hyperY)
+  .attr('r', 30)
+  .attr('fill', '#FFD54F')
+  .on('click', () => {
+    d3.select('#info').text('Hypernetwork Node: Generates classifier weights from prototypes.');
+  });
+hyperG.append('text')
+  .attr('x', hyperX)
+  .attr('y', hyperY + 5)
+  .attr('text-anchor','middle')
+  .text('Hypernet');
+
+// ========== Add Classifier Node =============
+const classG = svg.append('g');
+classG.append('circle')
+  .attr('class','classifier')
+  .attr('cx', classX)
+  .attr('cy', classY)
+  .attr('r', 30)
+  .attr('fill', '#FF8A80')
+  .on('click', () => {
+    d3.select('#info').text('Classifier Node: Updated weights after each new task.');
+  });
+classG.append('text')
+  .attr('x', classX)
+  .attr('y', classY+5)
+  .attr('text-anchor','middle')
+  .text('Classifier');
+
+// We'll have a group for edges
+const edgesG = svg.append('g').attr('class','edgesG');
+// We'll have a group for the prototype images
+const protoG = svg.append('g').attr('class','protoG');
+
+//------------------------------------------------
+// getRandomPos(taskIdx) -> returns [x,y] in a region (left side) so it looks nice.
+//------------------------------------------------
+function getRandomPos(taskIdx) {
+  // We'll place each task in a distinct vertical band.
+  // For example, task0 around x=0.1 * width, task1 around x=0.2 * width, etc.
+  // Then y is random.
+  const baseX = 0.15 + 0.1 * taskIdx;
+  const x = baseX * width + (Math.random()-0.5)*40; // small jitter
+  const y = 0.2*height + (Math.random()-0.5)*200;
+  return [x,y];
+}
+
+//------------------------------------------------
+// applyAugmentation(proto) -> modifies the filter or position to simulate drift.
+//------------------------------------------------
+function applyAugmentation(proto) {
+  // We'll shift x,y a bit to simulate drift in latent space
+  const driftX = (Math.random()-0.5)*50;
+  const driftY = (Math.random()-0.5)*50;
+  proto.x += driftX;
+  proto.y += driftY;
+
+  // Also we can do random CSS filter changes: brightness, contrast, hue-rotate, etc
+  // We'll store them in proto.filterStr, then apply it to the <image>.
+  const brightness = (0.8 + Math.random()*0.4).toFixed(2);  // 0.8 - 1.2
+  const contrast = (0.8 + Math.random()*0.4).toFixed(2);    // 0.8 - 1.2
+  const hue = Math.floor(Math.random()*60);                 // up to 60 deg shift
+  // combine
+  proto.filterStr = `brightness(${brightness}) contrast(${contrast}) hue-rotate(${hue}deg)`;
+}
+
+//------------------------------------------------
+// updateVisualization()
+// 1) Update D3 data join for prototypes.
+// 2) For each proto, create or update a <image> element.
+// 3) Create edges from each proto to hypernet, then hypernet to classifier.
+//------------------------------------------------
+function updateVisualization() {
+
+  // D3 data join for prototypes.
+  const selection = protoG.selectAll('image.protoImage').data(prototypes, d => d.id);
+
+  // ENTER
+  const enterSel = selection.enter().append('svg:image')
+    .attr('class','protoImage')
+    // we'll set initial coords near the hypernet for a nice effect
+    .attr('x', hyperX - 25)
+    .attr('y', hyperY - 25)
     .attr('width', 50)
     .attr('height', 50)
-    .attr('xlink:href', d => d.url)
-    .attr('x', width/2 - 25)
-    .attr('y', height/2 - 25);
+    .attr('opacity', 0)
+    .on('click', (evt, d) => {
+      d3.select('#info').text(`Prototype: ${d.label} - transformations applied!`);
+    })
+    .attr('xlink:href', d => d.img);
 
-  // ====== Radial Layout Calculation ======
-  function radialLayout(index) {
-    // We'll randomly shift radius and angle each time for visual excitement
-    const baseRadius = 150 + 30*index; // expand outward each task
-    const angleOffset = Math.random() * Math.PI * 2;
+  // Then we transition them to their actual coords
+  enterSel.transition().duration(1000)
+    .attr('opacity', 1)
+    .attr('x', d => d.x - 25)
+    .attr('y', d => d.y - 25);
 
-    // Return array of positions for each prototype in a circle
-    return prototypes.map((p, i) => {
-      const angle = angleOffset + i * (2 * Math.PI / prototypes.length);
-      const x = width/2 + baseRadius * Math.cos(angle);
-      const y = height/2 + baseRadius * Math.sin(angle);
-      return [x, y];
+  // UPDATE
+  selection.transition().duration(1000)
+    .attr('x', d => d.x - 25)
+    .attr('y', d => d.y - 25)
+    .style('filter', d => d.filterStr || null);
+
+  // EXIT
+  selection.exit()
+    .transition().duration(800)
+      .attr('opacity',0)
+      .remove();
+
+  // Now edges: for each proto, we have 2 edges.
+  // We'll construct an array of edges.
+  let edgesArr = [];
+  prototypes.forEach(pt => {
+    // from proto -> hypernet
+    edgesArr.push({
+      id: pt.id + '_ph',
+      x1: pt.x, y1: pt.y,
+      x2: hyperX, y2: hyperY
     });
-  }
-
-  // ====== Main Render Function ======
-  function render(taskIndex) {
-    // We'll get new x,y for each prototype
-    const positions = radialLayout(taskIndex);
-
-    ringGroups.each(function(d, i) {
-      // For group i, the new position
-      const [nx, ny] = positions[i];
-      // Transition the ring
-      d3.select(this).select('circle')
-        .transition().duration(1000)
-        .attr('cx', nx)
-        .attr('cy', ny)
-        .attr('fill', () => colorScale(Math.floor(Math.random()*9))); // random color each time
-      // Transition the image
-      d3.select(this).select('image')
-        .transition().duration(1000)
-        .attr('x', nx - 25)
-        .attr('y', ny - 25);
+    // from hypernet -> classifier
+    edgesArr.push({
+      id: pt.id + '_hc',
+      x1: hyperX, y1: hyperY,
+      x2: classX, y2: classY
     });
-  }
-
-  // Initial layout
-  render(0);
-
-  // ====== Button for next task ======
-  d3.select('#nextTaskBtn').on('click', () => {
-    taskNumber++;
-    render(taskNumber);
-    d3.select('#infoBox')
-      .text(`Training on Task ${taskNumber} - prototypes are repositioning and recoloring!`);
   });
+
+  // Data join for edges.
+  const edgeSel = edgesG.selectAll('line.protoEdge').data(edgesArr, d => d.id);
+
+  // ENTER edges
+  const eEnter = edgeSel.enter().append('line')
+    .attr('class','protoEdge')
+    .attr('x1', d => d.x1)
+    .attr('y1', d => d.y1)
+    .attr('x2', d => d.x1)
+    .attr('y2', d => d.y1)
+    .attr('opacity', 0);
+
+  eEnter.transition().duration(1000)
+    .attr('opacity', 1)
+    .attr('x2', d => d.x2)
+    .attr('y2', d => d.y2);
+
+  // UPDATE edges
+  edgeSel.transition().duration(1000)
+    .attr('x1', d => d.x1)
+    .attr('y1', d => d.y1)
+    .attr('x2', d => d.x2)
+    .attr('y2', d => d.y2)
+    .attr('opacity', 1);
+
+  // EXIT edges
+  edgeSel.exit()
+    .transition().duration(800)
+      .attr('opacity',0)
+      .remove();
+}
+
+//------------------------------------------------
+// onClick: nextTask
+// We add new prototypes from tasks[currentTaskIndex], each with an ID.
+// Then we also apply random transformations to all existing prototypes.
+//------------------------------------------------
+
+function nextTask() {
+  if(currentTaskIndex >= tasks.length){
+    d3.select('#info').text('All tasks done. No more prototypes to add.');
+    return;
+  }
+
+  // 1) for the new set of prototypes, define an ID, random position, etc.
+  const newProtos = tasks[currentTaskIndex].map((item, i) => {
+    const [rx, ry] = getRandomPos(currentTaskIndex);
+    return {
+      id: 'task' + currentTaskIndex + '_proto' + i,
+      label: item.label,
+      img: item.img,
+      x: rx,
+      y: ry,
+      filterStr: ''
+    };
+  });
+
+  // 2) Add them to the global prototypes array.
+  prototypes = prototypes.concat(newProtos);
+
+  // 3) Also apply augmentation to all prototypes (including newly added ones)
+  prototypes.forEach(pt => {
+    applyAugmentation(pt);
+  });
+
+  // 4) updateVisualization
+  updateVisualization();
+
+  currentTaskIndex++;
+  d3.select('#info').text(`Trained Task ${currentTaskIndex}. Augmentations applied & new prototypes added!`);
+}
+
+//------------------------------------------------
+// init
+//------------------------------------------------
+
+const btn = d3.select('#nextTaskBtn');
+btn.on('click', () => {
+  nextTask();
+});
+
+// initial call: no prototypes.
+updateVisualization();
 </script>
 
 </body>

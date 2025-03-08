@@ -4,30 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="description" content="Interactive demo of the Prototype-Augmented Hypernetworks (PAH) architecture for continual learning." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAH Architecture - Interactive Demo</title>
+    <title>PAH Architecture Demo - v2.0</title>
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 
-    <header>
-        <h1>Prototype-Augmented Hypernetworks (PAH)</h1>
-        <p class="subtitle">Interactive Visualization of the PAH Architecture for Continual Learning</p>
+    <header class="header-v2">
+        <h1>PAH Architecture Visualization</h1>
+        <p class="subtitle-v2">Prototype-Augmented Hypernetworks for Continual Learning</p>
     </header>
 
-    <main id="mainContainer">
-        <div id="vizContainer">
-            <svg id="pahViz"></svg>
-        </div>
-        <div class="controls">
-            <button id="trainBtn">Train Next Task</button>
-        </div>
-        <div id="infoBox">Click "Train Next Task" to incrementally add prototypes, observe augmentations, and visualize the data and gradient flow through the PAH architecture.</div>
+    <main id="mainContainer-v2">
+        <section id="vizSection">
+            <div id="controls-v2">
+                <button id="trainBtn-v2">Train Next Task</button>
+            </div>
+            <div id="vizArea-v2">
+                <svg id="pahViz-v2"></svg>
+            </div>
+        </section>
+
+        <section id="infoSection-v2">
+            <div id="infoBox-v2">
+                Click "Train Next Task" to begin exploring the PAH architecture. Prototypes will appear for each task, and data flow will be visualized. Click on components or loss circles for more information.
+            </div>
+        </section>
     </main>
 
-    <footer>
-        <p>© 2024 PAH Demo. Visualization by [Your Name/Organization]. Based on Prototype-Augmented Hypernetworks (PAH) Research.</p>
+    <footer class="footer-v2">
+        <p>© 2024 PAH Architecture Demo. Created for visualization purposes.</p>
     </footer>
 
     <script src="app.js"></script>

@@ -2,40 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Interactive demo of Prototype-Augmented Hypernetworks (PAH) for continual learning." />
+    <meta name="description" content="Interactive demo of the Prototype-Augmented Hypernetworks (PAH) architecture for continual learning." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAH Architecture Demo - v2.0</title>
+    <title>PAH Architecture Demo - Version 3.0</title>
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 
-    <header class="header-v2">
-        <h1>PAH Architecture Visualization</h1>
-        <p class="subtitle-v2">Prototype-Augmented Hypernetworks for Continual Learning</p>
-    </header>
+    <div id="app-container">
 
-    <main id="mainContainer-v2">
-        <section id="vizSection">
-            <div id="controls-v2">
-                <button id="trainBtn-v2">Train Next Task</button>
-            </div>
-            <div id="vizArea-v2">
-                <svg id="pahViz-v2"></svg>
-            </div>
-        </section>
+        <header id="header-v3">
+            <h1>PAH Architecture Demo</h1>
+            <p class="subtitle-v3">Interactive Visualization of Prototype-Augmented Hypernetworks</p>
+        </header>
 
-        <section id="infoSection-v2">
-            <div id="infoBox-v2">
-                Click "Train Next Task" to begin exploring the PAH architecture. Prototypes will appear for each task, and data flow will be visualized. Click on components or loss circles for more information.
-            </div>
-        </section>
-    </main>
+        <main id="main-content-v3">
+            <section id="visualization-section-v3">
+                <div id="viz-controls-v3">
+                    <button id="train-task-btn-v3">Train Next Task</button>
+                </div>
+                <div id="architecture-viz-v3">
+                    <svg id="pah-svg-v3"></svg>
+                </div>
+            </section>
 
-    <footer class="footer-v2">
-        <p>© 2024 PAH Architecture Demo. Created for visualization purposes.</p>
-    </footer>
+            <section id="info-panel-v3">
+                <div id="instruction-box-v3">
+                    Click "Train Next Task" to begin exploring. Observe the dynamic architecture and prototype evolution.
+                </div>
+                <div id="details-box-v3">
+                    <p id="component-info-v3">Hover or click on components for details.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer id="footer-v3">
+            <p>Created to visualize the Prototype-Augmented Hypernetworks (PAH) architecture.</p>
+        </footer>
+
+    </div>
 
     <script src="app.js"></script>
 </body>

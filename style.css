@@ -1,65 +1,78 @@
-/* Basic reset and layout */
+/* -----------------------
+   GLOBAL RESETS & BASIC 
+------------------------ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  font-family: "Open Sans", sans-serif;
+  background: linear-gradient(125deg, #f7faff, #eef2f7);
+  color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(125deg, #f2f4f8, #ffffff);
-  font-family: sans-serif;
-  color: #333;
-  padding: 20px;
+  min-height: 100vh;
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin: 20px 0;
   font-weight: 600;
+  font-size: 28px;
+  color: #303f9f;
 }
 
+/* -----------------------
+   MAIN CONTAINER
+------------------------ */
 #mainContainer {
   width: 1100px;
   max-width: 95%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  padding: 20px;
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  padding: 24px;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 #vizContainer {
   width: 100%;
   height: 700px;
-  background: #fbfcfe;
-  border-radius: 8px;
-  position: relative;
-  margin-bottom: 15px;
+  background: #fafcff;
+  border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 15px;
+  position: relative;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 #pahViz {
   width: 100%;
   height: 700px;
-  border-radius: 8px;
-  background: #fbfcfe;
 }
 
+/* -----------------------
+   BUTTONS & INFO
+------------------------ */
 #trainBtn {
   margin: 10px 0;
-  padding: 10px 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
   background: #1976d2;
   color: #fff;
-  border: none;
-  border-radius: 6px;
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 #trainBtn:hover {
   background: #0d47a1;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
 #infoBox {
@@ -70,52 +83,56 @@ h1 {
   font-size: 14px;
   color: #444;
   text-align: left;
+  margin-top: 8px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Architecture Boxes */
+/* -----------------------
+   ARCHITECTURE STYLES
+------------------------ */
 .compBox {
-  fill: #fff;
+  rx: 8; ry: 8;
   stroke: #999;
   stroke-width: 1.5;
-  rx: 8;
-  ry: 8;
+  fill: #fff;
+  fill-opacity: 0.95;
+  transition: fill-opacity 0.4s;
+}
+.compBox:hover {
+  fill-opacity: 1.0;
 }
 .backboneGrad {
-  /* Soft blue gradient */
   fill: url(#backboneGradient);
 }
 .hyperGrad {
-  /* Soft green gradient */
   fill: url(#hyperGradient);
 }
 .headGrad {
-  /* Soft purple or pink gradient */
   fill: url(#headGradient);
 }
 .compLabel {
   pointer-events: none;
   fill: #444;
-  font-weight: 600;
   font-size: 15px;
+  font-weight: 600;
 }
 
-/* Prototypes: actual CIFAR images */
+/* PROTOTYPES */
 .protoImage {
   cursor: pointer;
   transition: transform 0.4s, filter 0.4s, opacity 0.4s;
-  filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.15));
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
 }
 .protoImage:hover {
-  transform: scale(1.13);
+  transform: scale(1.14);
 }
 
-/* Arrows (lines) for forward pass, weight generation, gradients */
+/* ARROWS & LINES */
 line, path {
   fill: none;
   stroke-width: 2;
 }
 
-/* Forward pass: black arrows */
 .fwdArrow {
   stroke: #444;
   stroke-dasharray: 2000;
@@ -124,29 +141,28 @@ line, path {
   marker-end: url(#markerFwd);
 }
 @keyframes flowFwd {
-  to {
-    stroke-dashoffset: 0;
-  }
+  to { stroke-dashoffset: 0; }
 }
 
-/* Weight generation from HyperNet to TaskHead (green) */
 .weightArrow {
   stroke: #4caf50;
   marker-end: url(#markerGreen);
 }
 
-/* Hard & Soft Loss gradient flows: red solid & dashed */
 .gradArrow {
   stroke: #f44336;
+  transition: stroke-dashoffset 0.6s;
 }
 .solidGrad {
   stroke-dasharray: none;
 }
 .dashedGrad {
   stroke-dasharray: 6,4;
-  stroke-width: 2.2;
-  opacity: 0.8;
+  stroke-width: 2.3;
+  opacity: 0.9;
 }
+
+/* LOSS CIRCLES */
 .lossCircle {
   fill: #f44336;
   stroke: #fff;

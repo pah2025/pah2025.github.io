@@ -1,348 +1,347 @@
 /**********************************************
- * Polished Interactive PAH Demo - app.js
+ * app.js - PAH Architecture Demo v2.0
  *
- * - Refined layout and styling (see style.css)
- * - Animates prototypes, forward pass lines,
- *   hypernetwork weight lines, and red gradient lines
- * - Interactive Lhm, Lsm, Lsp circles with info on hover/click
- * - Clearer comments and code organization
+ * - Complete rewrite for improved aesthetics & layout
+ * - Addresses image size, overlapping, dynamism issues
+ * - Grid-based prototype layout, larger images
+ * - Cleaner code structure and comments
+ * - Uses "v2" class names from style.css (style-v2.css)
  **********************************************/
 
-const width = 1100, height = 700;
-const svg = d3.select("#pahViz")
-    .attr("viewBox", [0, 0, width, height]);
+const width_v2 = 1200, height_v2 = 650;
+const svg_v2 = d3.select("#pahViz-v2")
+    .attr("viewBox", [0, 0, width_v2, height_v2]);
 
-/* -------- 1) Define Gradients (for component boxes) -------- */
-const defs = svg.append("defs");
+/* -------- 1) Define Gradients (v2 - Refined Colors) -------- */
+const defs_v2 = svg_v2.append("defs");
 
-// BACKBONE gradient
-const bbGrad = defs.append("linearGradient")
-    .attr("id","backboneGradient")
+// BACKBONE gradient v2
+const bbGrad_v2 = defs_v2.append("linearGradient")
+    .attr("id","backboneGradient-v2")
     .attr("x1","0%").attr("y1","0%")
     .attr("x2","100%").attr("y2","0%");
-bbGrad.append("stop").attr("offset","0%").attr("stop-color","#b3e5fc"); // Light blue
-bbGrad.append("stop").attr("offset","100%").attr("stop-color","#81d4fa"); // Medium blue
+bbGrad_v2.append("stop").attr("offset","0%").attr("stop-color","#aed6f1"); // Lighter blue
+bbGrad_v2.append("stop").attr("offset","100%").attr("stop-color","#85c1e9"); // Medium blue
 
-// HYPER gradient
-const hpGrad = defs.append("linearGradient")
-    .attr("id","hyperGradient")
+// HYPER gradient v2
+const hpGrad_v2 = defs_v2.append("linearGradient")
+    .attr("id","hyperGradient-v2")
     .attr("x1","0%").attr("y1","0%")
     .attr("x2","100%").attr("y2","0%");
-hpGrad.append("stop").attr("offset","0%").attr("stop-color","#c8e6c9"); // Light green
-hpGrad.append("stop").attr("offset","100%").attr("stop-color","#a5d6a7"); // Medium green
+hpGrad_v2.append("stop").attr("offset","0%").attr("stop-color","#a9dfbf"); // Lighter green
+hpGrad_v2.append("stop").attr("offset","100%").attr("stop-color","#82e0aa"); // Medium green
 
-// HEAD gradient
-const thGrad = defs.append("linearGradient")
-    .attr("id","headGradient")
+// HEAD gradient v2
+const thGrad_v2 = defs_v2.append("linearGradient")
+    .attr("id","headGradient-v2")
     .attr("x1","0%").attr("y1","0%")
     .attr("x2","100%").attr("y2","0%");
-thGrad.append("stop").attr("offset","0%").attr("stop-color","#e1bee7"); // Light purple
-thGrad.append("stop").attr("offset","100%").attr("stop-color","#ce93d8"); // Medium purple
+thGrad_v2.append("stop").attr("offset","0%").attr("stop-color","#d2b4de"); // Lighter purple
+thGrad_v2.append("stop").attr("offset","100%").attr("stop-color","#c39bd3"); // Medium purple
 
 
-/* -------- 2) Arrow Markers (for visual flow indication) -------- */
-defs.append("marker") // Forward pass arrow marker
-    .attr("id","markerFwd")
+/* -------- 2) Arrow Markers (v2 - Refined Style) -------- */
+defs_v2.append("marker") // Forward pass arrow marker v2
+    .attr("id","markerFwd-v2")
     .attr("markerWidth",10).attr("markerHeight",10)
     .attr("refX",10).attr("refY",0)
     .attr("orient","auto")
     .append("path")
-        .attr("d","M0,-5L10,0L0,5")
-        .attr("fill","#666"); // Dark grey
+        .attr("d","M0,-4L9,0L0,4") // Slightly smaller arrowhead
+        .attr("fill","#777"); // Medium grey
 
-defs.append("marker") // Weight generation arrow marker (Green)
-    .attr("id","markerGreen")
+defs_v2.append("marker") // Weight generation arrow marker (Green) v2
+    .attr("id","markerGreen-v2")
     .attr("markerWidth",10).attr("markerHeight",10)
     .attr("refX",10).attr("refY",0)
     .attr("orient","auto")
     .append("path")
-        .attr("d","M0,-5L10,0L0,5")
-        .attr("fill","#4caf50"); // Green
+        .attr("d","M0,-4L9,0L0,4") // Slightly smaller arrowhead
+        .attr("fill","#55a868"); // Green
 
-defs.append("marker") // Gradient arrow marker (Red)
-    .attr("id","markerRed")
+defs_v2.append("marker") // Gradient arrow marker (Red) v2
+    .attr("id","markerRed-v2")
     .attr("markerWidth",10).attr("markerHeight",10)
     .attr("refX",10).attr("refY",0)
     .attr("orient","auto")
     .append("path")
-        .attr("d","M0,-5L10,0L0,5")
-        .attr("fill","#f44336"); // Red
+        .attr("d","M0,-4L9,0L0,4") // Slightly smaller arrowhead
+        .attr("fill","#e74c3c"); // Red
 
 
-/* -------- 3) Layout Positions for Architecture Components -------- */
-const backbone = { x: 420, y: 360, w: 200, h: 100 };
-const hyper = {    x: 470, y: 190, w: 130, h: 60 };
-const head = {     x: 830, y: 320, w: 130, h: 80 };
-const embed = {    x: 180, y: 140, w: 110, h: 50 };
+/* -------- 3) Layout Positions for Architecture Components (v2 - Structured) -------- */
+const backbone_v2 = { x: 200, y: 280, w: 220, h: 120 }; // Shifted more left
+const hyper_v2 = {    x: 250, y: 100, w: 150, h: 70 };  // Above Backbone
+const head_v2 = {     x: 800, y: 280, w: 200, h: 120 }; // Shifted more right
+const embed_v2 = {    x: 500, y: 100, w: 200, h: 70 };  // Between Hyper & Head
 
-let prototypes = []; // Array to hold prototype data
-let currentTask = 0; // Task counter
+let prototypes_v2 = []; // Array for prototypes
+let currentTask_v2 = 0; // Task counter
 
-const edgesG = svg.append("g");   // Group for edges (arrows/lines)
-const protoG = svg.append("g");   // Group for prototypes (images)
-const lossG = svg.append("g");    // Group for loss circles
+const edgesG_v2 = svg_v2.append("g");   // Group for edges
+const protoG_v2 = svg_v2.append("g");   // Group for prototypes
+const lossG_v2 = svg_v2.append("g");    // Group for loss circles
 
 
-/* -------- 4) Function to Draw Component Boxes -------- */
-function drawBox(box, className, label) {
-    svg.append("rect")
-        .attr("class", `compBox ${className}`)
+/* -------- 4) Function to Draw Component Boxes (v2 - Class names) -------- */
+function drawBox_v2(box, className, label) {
+    svg_v2.append("rect")
+        .attr("class", `compBox-v2 ${className}`)
         .attr("x", box.x).attr("y", box.y)
         .attr("width", box.w).attr("height", box.h);
 
-    svg.append("text")
-        .attr("class","compLabel")
+    svg_v2.append("text")
+        .attr("class","compLabel-v2")
         .attr("x", box.x + box.w*0.5)
-        .attr("y", box.y + box.h*0.5 + 5)
+        .attr("y", box.y + box.h*0.5 + 6) // Adjusted vertical centering
         .attr("text-anchor","middle")
         .text(label);
 }
-// Draw the main component boxes
-drawBox(embed,   "",            "Task Emb\n e");
-drawBox(hyper,   "hyperGrad",   "HyperNet");
-drawBox(backbone,"backboneGrad","Backbone");
-drawBox(head,    "headGrad",    "Task Head");
+// Draw component boxes v2
+drawBox_v2(embed_v2,    "",               "Task Embedding\n e");
+drawBox_v2(hyper_v2,    "hyperGrad-v2",    "HyperNet");
+drawBox_v2(backbone_v2, "backboneGrad-v2", "Backbone");
+drawBox_v2(head_v2,     "headGrad-v2",     "Task Head");
 
 
-/* -------- 5) Task Data (CIFAR-10 Examples) -------- */
-const tasksData = [
-    [ // Task 1: Dogs and Cats
-        { label:"T1-Dog",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/dog4.png" },
-        { label:"T1-Cat",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/cat1.png" }
-    ],
-    [ // Task 2: Deer and Birds
-        { label:"T2-Deer", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/deer4.png" },
-        { label:"T2-Bird", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/bird4.png" }
-    ],
-    [ // Task 3: Frogs and Cars
-        { label:"T3-Frog", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/frog2.png" },
-        { label:"T3-Car",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/automobile1.png" }
-    ],
-    [ // Task 4: Planes and Ships
-        { label:"T4-Plane",img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/airplane4.png" },
-        { label:"T4-Ship", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/ship2.png" }
-    ]
+/* -------- 5) Task Data (CIFAR-10 Examples) - Same Data -------- */
+const tasksData_v2 = [
+    [   { label:"T1-Dog",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/dog4.png" },
+        { label:"T1-Cat",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/cat1.png" } ],
+    [   { label:"T2-Deer", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/deer4.png" },
+        { label:"T2-Bird", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/bird4.png" } ],
+    [   { label:"T3-Frog", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/frog2.png" },
+        { label:"T3-Car",  img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/automobile1.png" } ],
+    [   { label:"T4-Plane",img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/airplane4.png" },
+        { label:"T4-Ship", img:"https://www.cs.toronto.edu/~kriz/cifar-10-sample/ship2.png" } ]
 ];
 
 
-/* -------- 6) Helper Functions for Prototype Positioning & Augmentation -------- */
-function randomPos(tIndex) {
-    const baseX = 60 + tIndex*50; // Base X position shifts with task index
-    const x = baseX + (Math.random()-0.5)*20; // Add some horizontal randomness
-    const y = 40 + Math.random()*60;          // Vertical randomness
-    return [x,y];
+/* -------- 6) Prototype Positioning & Augmentation (v2 - Grid Layout) -------- */
+function protoGridPos_v2(protoIndex, taskIndex, numProtosInTask) {
+    const startX = 80;           // Left margin for prototypes
+    const startY = 480;          // Top margin for prototype grid
+    const protoSpacingX = 100;   // Horizontal spacing between prototypes
+    const protoSpacingY = 100;   // Vertical spacing between rows
+    const protosPerRow = 4;      // Number of prototypes per row
+
+    const colIndex = protoIndex % protosPerRow;
+    const rowIndex = Math.floor(protoIndex / protosPerRow);
+
+    const x = startX + colIndex * protoSpacingX + (Math.random()-0.5)*15; // Horizontal position with slight jitter
+    const y = startY + rowIndex * protoSpacingY + (Math.random()-0.5)*15; // Vertical position with slight jitter
+
+    return [x, y];
 }
 
-function augment(proto) {
-    proto.x += (Math.random()-0.5)*8;  // Less horizontal jitter
-    proto.y += (Math.random()-0.5)*8;  // Less vertical jitter
-    const br = (0.85 + 0.3*Math.random()).toFixed(2); // Brightness closer to 1
-    const hr = Math.floor(Math.random()*30);         // Hue rotation less extreme
+function augment_v2(proto) {
+    proto.x += (Math.random()-0.5)*10; // Reduced jitter
+    proto.y += (Math.random()-0.5)*10; // Reduced jitter
+    const br = (0.9 + 0.2*Math.random()).toFixed(2); // Brighter, less extreme
+    const hr = Math.floor(Math.random()*20);         // Less hue rotation
     proto.filterStr = `brightness(${br}) hue-rotate(${hr}deg)`;
 }
 
 
-/* -------- 7) Main Render Function - Updates Visualization -------- */
-function render() {
-    /* --- PROTOTYPES --- */
-    const sel = protoG.selectAll("image.protoImage").data(prototypes, d=> d.id);
+/* -------- 7) Render Function (v2 - Updated for New Layout & Styles) -------- */
+function render_v2() {
+    /* --- PROTOTYPES (v2 - Grid Layout) --- */
+    const sel_v2 = protoG_v2.selectAll("image.protoImage-v2").data(prototypes_v2, d=> d.id);
 
-    // --- Prototype Enter ---
-    const ent = sel.enter().append("svg:image")
-        .attr("class","protoImage")
+    // --- Prototype Enter (v2) ---
+    const ent_v2 = sel_v2.enter().append("svg:image")
+        .attr("class","protoImage-v2")
         .attr("xlink:href", d => d.img)
-        .attr("width", 45).attr("height",45)
+        .attr("width", 60).attr("height",60) // Larger size
         .attr("opacity",0)
-        .on("click",(evt,d)=>{ // Info on prototype click
-            d3.select("#infoBox").text(`Prototype: ${d.label} → Flatten → HyperNet → Task Head. Represents class-specific features.`);
+        .on("click",(evt,d)=>{
+            d3.select("#infoBox-v2").text(`Prototype: ${d.label}. Represents learned class features. Feeds into Task Embedding.`);
         });
-    ent.attr("x", d=> d.x).attr("y", d=> d.y)
+    ent_v2.attr("x", d=> d.x).attr("y", d=> d.y)
         .transition().duration(800)
-            .attr("opacity",1); // Fade in new prototypes
+            .attr("opacity",1); // Fade in
 
-    // --- Prototype Update ---
-    sel.transition().duration(800)
+    // --- Prototype Update (v2) ---
+    sel_v2.transition().duration(800)
         .attr("x", d=> d.x)
         .attr("y", d=> d.y)
-        .style("filter", d=> d.filterStr); // Apply augmentation
+        .style("filter", d=> d.filterStr); // Apply augment
 
-    // --- Prototype Exit ---
-    sel.exit().transition().duration(600)
+    // --- Prototype Exit (v2) ---
+    sel_v2.exit().transition().duration(600)
         .attr("opacity",0)
-        .remove(); // Fade out and remove old prototypes
+        .remove(); // Fade out
 
-    /* --- EDGES (Arrows and Lines) --- */
-    const edges = [];
+    /* --- EDGES (Arrows & Lines) (v2 - Adjusted Positions) --- */
+    const edges_v2 = [];
 
-    // --- Forward Pass Arrows (Prototypes -> Embed, Embed -> Backbone, Backbone -> Head) ---
-    prototypes.forEach(p=>{ // Prototypes to Task Embedding
-        edges.push({
+    // --- Forward Pass Arrows (v2 - Adjusted Coordinates) ---
+    prototypes_v2.forEach(p=>{
+        edges_v2.push({
             id:p.id+"_fwdPE",
-            cls:"fwdArrow archEdge",
-            x1:p.x+22, y1:p.y+22,
-            x2:embed.x, y2:embed.y+embed.h/2
+            cls:"fwdArrow-v2 archEdge-v2",
+            x1:p.x+30, y1:p.y+30, // Center of proto image
+            x2:embed_v2.x, y2:embed_v2.y+embed_v2.h/2 // Embed box center-left
         });
     });
-    edges.push({ // Task Embedding to Backbone
+    edges_v2.push({ // Embed -> Backbone v2
         id:"emb2bb",
-        cls:"fwdArrow archEdge",
-        x1: embed.x+embed.w,   y1: embed.y+embed.h/2,
-        x2: backbone.x,        y2: backbone.y+backbone.h/2
+        cls:"fwdArrow-v2 archEdge-v2",
+        x1: embed_v2.x+embed_v2.w,   y1: embed_v2.y+embed_v2.h/2, // Embed box center-right
+        x2: backbone_v2.x,        y2: backbone_v2.y+backbone_v2.h/2 // Backbone box center-left
     });
-    edges.push({ // Backbone to Task Head
+    edges_v2.push({ // Backbone -> Head v2
         id:"bb2head",
-        cls:"fwdArrow archEdge",
-        x1: backbone.x+backbone.w,
-        y1: backbone.y+backbone.h/2,
-        x2: head.x,
-        y2: head.y+head.h/2
+        cls:"fwdArrow-v2 archEdge-v2",
+        x1: backbone_v2.x+backbone_v2.w,
+        y1: backbone_v2.y+backbone_v2.h/2,
+        x2: head_v2.x,
+        y2: head_v2.y+head_v2.h/2
     });
 
-    // --- Weight Generation Arrows (Embed -> HyperNet, HyperNet -> Task Head) ---
-    edges.push({ // Task Embedding to HyperNet (Weight Generation Start)
+    // --- Weight Generation Arrows (v2 - Adjusted) ---
+    edges_v2.push({ // Embed -> HyperNet v2
         id:"emb2hyper",
-        cls:"weightArrow archEdge",
-        x1: embed.x+embed.w/2,
-        y1: embed.y,
-        x2: hyper.x+hyper.w/2,
-        y2: hyper.y+hyper.h
+        cls:"weightArrow-v2 archEdge-v2",
+        x1: embed_v2.x+embed_v2.w/2,
+        y1: embed_v2.y+embed_v2.h, // Embed box bottom-center
+        x2: hyper_v2.x+hyper_v2.w/2,
+        y2: hyper_v2.y+hyper_v2.h // Hyper box bottom-center
     });
-    edges.push({ // HyperNet to Task Head (Weights Applied)
+    edges_v2.push({ // HyperNet -> Head v2
         id:"hyper2head",
-        cls:"weightArrow archEdge",
-        x1: hyper.x+hyper.w,
-        y1: hyper.y+hyper.h/2,
-        x2: head.x+(head.w*0.1),
-        y2: head.y
+        cls:"weightArrow-v2 archEdge-v2",
+        x1: hyper_v2.x+hyper_v2.w,
+        y1: hyper_v2.y+hyper_v2.h/2, // Hyper box center-right
+        x2: head_v2.x,
+        y2: head_v2.y // Head box top-center
     });
 
-    // --- Gradient Arrows (Loss Backpropagation) ---
-    edges.push({ // Lhm Gradient (Backbone to Task Head)
+    // --- Gradient Arrows (v2 - Adjusted) ---
+    edges_v2.push({ // Lhm Gradient v2
         id:"LhmLine",
-        cls:"gradArrow solidGrad archEdge",
-        x1: backbone.x + backbone.w*0.5, y1: backbone.y+backbone.h+12,
-        x2: head.x + head.w*0.3,         y2: head.y + head.h+20
+        cls:"gradArrow-v2 solidGrad-v2 archEdge-v2",
+        x1: backbone_v2.x + backbone_v2.w*0.5, y1: backbone_v2.y+backbone_v2.h+15, // Below Backbone
+        x2: head_v2.x + head_v2.w*0.3,         y2: head_v2.y + head_v2.h+25  // Below Head
     });
-    edges.push({ // Lsm Gradient (Task Head - Knowledge Distillation)
+    edges_v2.push({ // Lsm Gradient v2
         id:"LsmLine",
-        cls:"gradArrow solidGrad archEdge",
-        x1: head.x+head.w+60, y1: head.y+head.h*0.5,
-        x2: head.x+head.w+110,y2: head.y+head.h*0.5
+        cls:"gradArrow-v2 solidGrad-v2 archEdge-v2",
+        x1: head_v2.x+head_v2.w+50, y1: head_v2.y+head_v2.h*0.5, // Right of Head
+        x2: head_v2.x+head_v2.w+120,y2: head_v2.y+head_v2.h*0.5 // Further right
     });
-    edges.push({ // Lsp Gradient (Prototype Distillation)
+    edges_v2.push({ // Lsp Gradient v2
         id:"LspLine",
-        cls:"gradArrow dashedGrad archEdge",
-        x1: embed.x-20, y1: embed.y-10,
-        x2: prototypes.length? prototypes[0].x : embed.x, // Target prototype if exists
-        y2: prototypes.length? prototypes[0].y : embed.y
+        cls:"gradArrow-v2 dashedGrad-v2 archEdge-v2",
+        x1: embed_v2.x-30, y1: embed_v2.y-15, // Left of Embed
+        x2: prototypes_v2.length? prototypes_v2[0].x+15 : embed_v2.x-30, // Target proto or Embed left
+        y2: prototypes_v2.length? prototypes_v2[0].y-15 : embed_v2.y-15
     });
 
 
-    const eSel = edgesG.selectAll("line.archEdge").data(edges, d=> d.id);
+    const eSel_v2 = edgesG_v2.selectAll("line.archEdge-v2").data(edges_v2, d=> d.id);
 
-    // --- Edge Enter ---
-    const eEnt = eSel.enter().append("line")
-        .attr("class","archEdge")
+    // --- Edge Enter (v2) ---
+    const eEnt_v2 = eSel_v2.enter().append("line")
+        .attr("class","archEdge-v2")
         .attr("x1", d=> d.x1).attr("y1", d=> d.y1)
-        .attr("x2", d=> d.x1).attr("y2", d=> d.y1) // Start at source point
+        .attr("x2", d=> d.x1).attr("y2", d=> d.y1) // Start at source
         .attr("opacity",0);
 
-    eEnt.transition().duration(1000)
+    eEnt_v2.transition().duration(1000)
         .attr("opacity",1)
-        .attr("class", d=> `archEdge ${d.cls}`)
-        .attr("x2", d=> d.x2).attr("y2", d=> d.y2); // Animate to target point, apply class
+        .attr("class", d=> `archEdge-v2 ${d.cls}`)
+        .attr("x2", d=> d.x2).attr("y2", d=> d.y2); // Animate to target
 
-    // --- Edge Update ---
-    eSel.transition().duration(1000)
+    // --- Edge Update (v2) ---
+    eSel_v2.transition().duration(1000)
         .attr("x1", d=> d.x1).attr("y1", d=> d.y1)
         .attr("x2", d=> d.x2).attr("y2", d=> d.y2)
-        .attr("class", d=> `archEdge ${d.cls}`)
+        .attr("class", d=> `archEdge-v2 ${d.cls}`)
         .attr("opacity",1);
 
-    // --- Edge Exit ---
-    eSel.exit().remove();
+    // --- Edge Exit (v2) ---
+    eSel_v2.exit().remove();
 
 
-    /* --- LOSS CIRCLES (Interactive with Info) --- */
-    const losses = [
-        { id:"Lhm", x: backbone.x+backbone.w*0.5, y: backbone.y+backbone.h+25, text:"Lhm" },
-        { id:"Lsm", x: head.x+head.w+90,          y: head.y+head.h*0.5,        text:"Lsm" },
-        { id:"Lsp", x: embed.x-20,                y: embed.y-10,              text:"Lsp" },
+    /* --- LOSS CIRCLES (v2 - Positions & Interaction) --- */
+    const losses_v2 = [
+        { id:"Lhm", x: backbone_v2.x+backbone_v2.w*0.5, y: backbone_v2.y+backbone_v2.h+30, text:"Lhm" }, // Below Backbone
+        { id:"Lsm", x: head_v2.x+head_v2.w+100,        y: head_v2.y+head_v2.h*0.5,        text:"Lsm" }, // Right of Head
+        { id:"Lsp", x: embed_v2.x-30,                  y: embed_v2.y-15,                  text:"Lsp" }  // Left of Embed
     ];
-    const lSel = lossG.selectAll("g.lossGroup").data(losses, d=> d.id);
+    const lSel_v2 = lossG_v2.selectAll("g.lossGroup-v2").data(losses_v2, d=> d.id);
 
-    // --- Loss Circle Enter ---
-    const lEnt = lSel.enter().append("g")
-        .attr("class","lossGroup")
-        .on("click",(evt,d)=>{ // Info on loss circle click
+    // --- Loss Circle Enter (v2) ---
+    const lEnt_v2 = lSel_v2.enter().append("g")
+        .attr("class","lossGroup-v2")
+        .on("click",(evt,d)=>{
             let msg="";
             switch(d.id){
-                case "Lhm": msg="Hard Loss: Cross-entropy for current task classification accuracy."; break;
-                case "Lsm": msg="Soft Loss: Knowledge Distillation to preserve old task knowledge & reduce forgetting."; break;
-                case "Lsp": msg="Prototype Distillation: Ensures prototypes remain discriminative and consistent across tasks."; break;
+                case "Lhm": msg="Hard Loss: Cross-entropy. Measures current task accuracy."; break;
+                case "Lsm": msg="Soft Loss: Knowledge Distillation. Preserves prior knowledge."; break;
+                case "Lsp": msg="Prototype Loss: Ensures consistent prototype learning."; break;
             }
-            d3.select("#infoBox").text(`${d.text}: ${msg}`);
+            d3.select("#infoBox-v2").text(`${d.text}: ${msg}`);
         });
-    lEnt.append("circle")
-        .attr("class","lossCircle")
+    lEnt_v2.append("circle")
+        .attr("class","lossCircle-v2")
         .attr("cx", d=> d.x)
         .attr("cy", d=> d.y)
-        .attr("r", 15)
+        .attr("r", 18) // Slightly larger loss circles
         .attr("opacity", 0)
         .transition().duration(900)
-            .attr("opacity",1); // Fade in loss circles
-    lEnt.append("text")
-        .attr("class","lossLabel")
+            .attr("opacity",1); // Fade in
+    lEnt_v2.append("text")
+        .attr("class","lossLabel-v2")
         .attr("x", d=> d.x)
         .attr("y", d=> d.y+5)
         .attr("text-anchor","middle")
         .text(d=> d.text);
 
-    // --- Loss Circle Update ---
-    lSel.select("circle.lossCircle")
+    // --- Loss Circle Update (v2) ---
+    lSel_v2.select("circle.lossCircle-v2")
         .transition().duration(900)
             .attr("cx", d=> d.x)
             .attr("cy", d=> d.y);
-    lSel.select("text.lossLabel")
+    lSel_v2.select("text.lossLabel-v2")
         .transition().duration(900)
             .attr("x", d=> d.x)
             .attr("y", d=> d.y+5);
 
-    // --- Loss Circle Exit ---
-    lSel.exit().remove();
+    // --- Loss Circle Exit (v2) ---
+    lSel_v2.exit().remove();
 }
 
 
-/* -------- 8) Function to Handle "Train Next Task" Button Click -------- */
-function trainNextTask() {
-    if(currentTask >= tasksData.length) {
-        d3.select("#infoBox").text("All tasks completed. No more prototypes to add!");
+/* -------- 8) Train Next Task Function (v2 - Prototype Grid) -------- */
+function trainNextTask_v2() {
+    if(currentTask_v2 >= tasksData_v2.length) {
+        d3.select("#infoBox-v2").text("All tasks completed. No more prototypes to add.");
         return;
     }
 
-    // Add new prototypes for the current task
-    const newPros = tasksData[currentTask].map((p,i)=>{
-        const [rx, ry] = randomPos(currentTask);
+    const newProtos_v2 = tasksData_v2[currentTask_v2].map((p,i)=>{
+        const [rx, ry] = protoGridPos_v2(prototypes_v2.length + i, currentTask_v2, tasksData_v2[currentTask_v2].length); // Grid position
         return {
-            id:`task${currentTask}_p${i}`,
+            id:`task${currentTask_v2}_p${i}`,
             label:p.label,
             img:p.img,
             x:rx, y:ry,
             filterStr:""
         };
     });
-    prototypes = prototypes.concat(newPros); // Append new prototypes to existing array
+    prototypes_v2 = prototypes_v2.concat(newProtos_v2); // Add new prototypes
 
-    // Augment all prototypes (new and old) for visual variation
-    prototypes.forEach(augment);
+    prototypes_v2.forEach(augment_v2); // Augment prototypes
 
-    render(); // Re-render the visualization to reflect changes
-    currentTask++; // Increment task counter
-    d3.select("#infoBox")
-        .text(`Trained Task #${currentTask} → Added new prototypes, augmented existing ones, visualized data & gradient flow.`);
+    render_v2(); // Re-render
+    currentTask_v2++; // Inc task count
+    d3.select("#infoBox-v2")
+        .text(`Task #${currentTask_v2} trained. New prototypes added and visualized in a grid layout. Data and gradient flow are animated.`);
 }
 
 
-/* -------- 9) Setup Button Event Listener and Initial Render -------- */
-d3.select("#trainBtn").on("click", trainNextTask); // Button click handler
-render(); // Initial render on page load
+/* -------- 9) Button Event & Initial Render (v2) -------- */
+d3.select("#trainBtn-v2").on("click", trainNextTask_v2); // Button event
+render_v2(); // Initial render

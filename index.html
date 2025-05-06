@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAH: Prototype-Augmented Hypernetworks</title>
+  <link rel="stylesheet" href="./static/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="./static/css/index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <meta name="description" content="Project page for 'Prototype-Augmented Hypernetworks for Continual Multitask Learning'" />
+  <link rel="icon" href="./static/PAH_architecture.png" type="image/x-icon" />
+</head>
+
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <img src="./static/PAH_architecture.png" alt="PAH Logo" style="width: 450px; height: auto; margin-top: 20px;">
+        <h3 class="title is-3 publication-title">Prototype-Augmented Hypernetworks for Continual Multitask Learning</h3>
+
+        <div class="is-size-5 publication-authors">
+          <div class="author-block">[Author 1 Placeholder]</div>
+          <div class="author-block">[Author 2 Placeholder]</div>
+          <div class="author-block">[Author 3 Placeholder]</div>
+        </div>
+
+        <div class="is-size-5 publication-authors">
+          <span class="author-block"><sup>1</sup>Institution 1</span>
+          <span class="author-block"><sup>2</sup>Institution 2</span>
+          <span class="author-block"><strong>Conference:</strong> [Conference Placeholder]</span>
+        </div>
+
+        <div class="column has-text-centered">
+          <div class="publication-links">
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/XXXX.XXXXX" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/pah2025/PAH" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <p style="padding-top: 30px; padding-bottom:15px; text-align: left;"><strong>Abstract</strong></p>
+    <p>
+      Continual learning aims to learn sequential tasks without forgetting prior knowledge, but catastrophic forgetting—primarily concentrated in the final classification layers—remains a challenge.
+      We propose Prototype-Augmented Hypernetworks (PAH), a framework that uses hypernetworks conditioned on learnable task prototypes to dynamically generate task-specific classifier heads.
+      By aligning these heads with evolving representations and preserving shared knowledge through distillation, PAH effectively mitigates catastrophic forgetting.
+      Extensive evaluations on Split-CIFAR100 and TinyImageNet demonstrate state-of-the-art performance, achieving robust accuracy and minimal forgetting.
+    </p>
+
+    <p style="padding-top: 30px;"><strong>Model Architecture</strong></p>
+    <img src="./static/PAH_architecture.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
+
+    <p style="padding-top: 30px;"><strong>Installation</strong></p>
+    <pre><code>git clone https://github.com/pah2025/PAH
+cd PAH
+python -m venv env
+source env/bin/activate  # Or env\\Scripts\\activate on Windows
+pip install -r requirements.txt
+</code></pre>
+
+    <p style="padding-top: 30px;"><strong>Usage</strong></p>
+    <p>Modify <code>config/hyper2d.py</code> with your desired parameters and then run:</p>
+    <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
+
+    <p style="padding-top: 30px;"><strong>Data</strong></p>
+    <p>
+      The script will download and save Split-MNIST and Split-CIFAR100 in the <code>data/</code> folder.
+      You can download TinyImageNet from <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
+    </p>
+
+    <p style="padding-top: 30px;"><strong>Results</strong></p>
+    <p>Training results are saved in the <code>results/</code> directory and optionally visualized with Weights & Biases.</p>
+
+    <hr style="margin: 40px 0;">
+    <footer style="font-size: 12px; text-align: center;">
+      Template inspired by <a href="https://hypernvd.github.io" target="_blank">HyperNVD</a>
+    </footer>
+  </div>
+</body>
+</html>

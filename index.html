@@ -71,10 +71,21 @@
   <div class="container">
     <p style="padding-top: 30px; padding-bottom:15px; text-align: left;"><strong>Abstract</strong></p>
     <p>
-      Continual learning aims to learn sequential tasks without forgetting prior knowledge, but catastrophic forgetting—primarily concentrated in the final classification layers—remains a challenge.
-      We propose Prototype-Augmented Hypernetworks (PAH), a framework that uses hypernetworks conditioned on learnable task prototypes to dynamically generate task-specific classifier heads.
-      By aligning these heads with evolving representations and preserving shared knowledge through distillation, PAH effectively mitigates catastrophic forgetting.
-      Extensive evaluations on Split-CIFAR100 and TinyImageNet demonstrate state-of-the-art performance, achieving robust accuracy and minimal forgetting.
+      Continual learning (CL) aims to learn a sequence of tasks
+      without forgetting prior knowledge, but gradient updates
+      for a new task often overwrite the weights learned earlier,
+      causing catastrophic forgetting (CF). We propose Prototype-
+      Augmented Hypernetworks (P AH), a framework where a
+      single hypernetwork, conditioned on learnable task proto-
+      types, dynamically generates task-specific classifier heads
+      on demand. To mitigate forgetting, P AH combines cross-
+      entropy with dual distillation losses, one to align logits and
+      another to align prototypes, ensuring stable feature repre-
+      sentations across tasks. Evaluations on Split-CIFAR100
+      and TinyImageNet demonstrate that PAH achieves state-of-
+      the-art performance, reaching 74.5% and 63.7% accuracy
+      with only 1.7% and 4.4% forgetting, respectively, surpassing
+      prior methods without storing samples or heads.
     </p>
 
     <p style="padding-top: 30px;"><strong>Model Architecture</strong></p>

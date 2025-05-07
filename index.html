@@ -70,7 +70,7 @@
   </section>
 
   <div class="container">
-    <p style="padding-top: 30px; padding-bottom:15px; text-align: left;"><strong>Abstract</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
     <p>
       Continual learning (CL) aims to learn a sequence of tasks
       without forgetting prior knowledge, but gradient updates
@@ -89,10 +89,10 @@
       prior methods without storing samples or heads.
     </p>
 
-    <p style="padding-top: 30px;"><strong>Model Architecture</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
     <img src="./static/images/architecture.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
 
-    <p style="padding-top: 30px;"><strong>Installation</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Installation</p>
     <pre><code>git clone https://github.com/pah2025/PAH
 cd PAH
 python -m venv env
@@ -100,17 +100,17 @@ source env/bin/activate  # Or env\\Scripts\\activate on Windows
 pip install -r requirements.txt
 </code></pre>
 
-    <p style="padding-top: 30px;"><strong>Usage</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Usage</p>
     <p>Modify <code>config/hyper2d.py</code> with your desired parameters and then run:</p>
     <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
 
-    <p style="padding-top: 30px;"><strong>Data</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
     <p>
       The script will download and save Split-MNIST and Split-CIFAR100 in the <code>data/</code> folder.
       You can download TinyImageNet from <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
     </p>
 
-    <p style="padding-top: 30px;"><strong>Results</strong></p>
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>
     <p>Training results are saved in the <code>results/</code> directory and optionally visualized with Weights & Biases.</p>
 
     <hr style="margin: 40px 0;">

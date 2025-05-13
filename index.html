@@ -72,25 +72,25 @@
   <div class="container">
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
     <p>
-      Continual learning (CL) aims to learn a sequence of tasks
-      without forgetting prior knowledge, but gradient updates
-      for a new task often overwrite the weights learned earlier,
-      causing catastrophic forgetting (CF). We propose Prototype-
-      Augmented Hypernetworks (PAH), a framework where a
-      single hypernetwork, conditioned on learnable task proto-
-      types, dynamically generates task-specific classifier heads
-      on demand. To mitigate forgetting, P AH combines cross-
-      entropy with dual distillation losses, one to align logits and
-      another to align prototypes, ensuring stable feature repre-
-      sentations across tasks. Evaluations on Split-CIFAR100
-      and TinyImageNet demonstrate that PAH achieves state-of-
-      the-art performance, reaching 74.5% and 63.7% accuracy
-      with only 1.7% and 4.4% forgetting, respectively, surpassing
-      prior methods without storing samples or heads.
+      Continual learning (CL) aims to learn a sequence of tasks without forgetting prior knowledge, but gradient updates for a new task often overwrite the weights learned earlier, causing catastrophic forgetting (CF). We propose Prototype-Augmented Hypernetworks (PAH), a framework where a single hypernetwork, conditioned on learnable task prototypes, dynamically generates task-specific classifier heads on demand. To mitigate forgetting, PAH combines cross-entropy with dual distillation losses, one to align logits and another to align prototypes, ensuring stable feature representations across tasks. Evaluations on Split-CIFAR100 and TinyImageNet demonstrate that PAH achieves state-of-the-art performance, reaching 74.5% and 63.7% accuracy with only 1.7% and 4.4% forgetting, respectively, surpassing prior methods without storing samples or heads.
     </p>
 
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
     <img src="./static/images/architecture.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
+
+    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
+    <p>
+      In PAH, each task is represented by a learnable task prototype that encodes semantic and spatial information about the task’s classes. These prototypes are 2D feature grids (e.g., 10×10), initialized from resized training samples and optimized throughout training. They are not used for classification directly, but instead condition the hypernetwork to dynamically generate classifier heads.
+    </p>
+    <p>
+      The task prototype for a given task is formed by concatenating the class prototypes and flattening them into a vector. This vector is then fed into the hypernetwork, which outputs the weights for the classifier head corresponding to that task. Prototypes are updated using KL-divergence losses to remain aligned with the evolving feature space.
+    </p>
+    
+    <p>
+      The figure below illustrates how prototypes encode each task and influence classifier generation:
+    </p>
+    <img src="./static/images/prototype_generation.png" alt="Prototype Learning Diagram" style="width: 80%; display: block; margin: 20px auto;">
+
 
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Installation</p>
     <pre><code>git clone https://github.com/pah2025/PAH

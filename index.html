@@ -80,15 +80,15 @@
   </section>
 
   <div class="container">
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
     <p style="text-align: justify;">
       Continual learning (CL) aims to learn a sequence of tasks without forgetting prior knowledge, but gradient updates for a new task often overwrite the weights learned earlier, causing catastrophic forgetting (CF). We propose Prototype-Augmented Hypernetworks (PAH), a framework where a single hypernetwork, conditioned on learnable task prototypes, dynamically generates task-specific classifier heads on demand. To mitigate forgetting, PAH combines cross-entropy with dual distillation losses, one to align logits and another to align prototypes, ensuring stable feature representations across tasks. Evaluations on Split-CIFAR100 and TinyImageNet demonstrate that PAH achieves state-of-the-art performance, reaching 74.5% and 63.7% accuracy with only 1.7% and 4.4% forgetting, respectively, surpassing prior methods without storing samples or heads.
     </p>
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
     <img src="./static/images/PAH_arch.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
     <p style="text-align: justify;">
       In PAH, each task is represented by a learnable task prototype that encodes semantic and spatial information about the task’s classes. These prototypes are 2D feature grids (e.g., 10×10), initialized from resized training samples and optimized throughout training. They are not used for classification directly, but instead condition the hypernetwork to dynamically generate classifier heads.
     </p>
@@ -102,7 +102,7 @@
     <img src="./static/images/prototype_generation.png" alt="Prototype Learning Diagram" style="width: 80%; display: block; margin: 20px auto;">
 
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Installation</p>
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Installation</p>
     <pre><code>git clone https://github.com/pah2025/PAH
 cd PAH
 python -m venv env
@@ -110,17 +110,17 @@ source env/bin/activate  # Or env\\Scripts\\activate on Windows
 pip install -r requirements.txt
 </code></pre>
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Usage</p>
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Usage</p>
     <p>Modify <code>config/hyper2d.py</code> with your desired parameters and then run:</p>
     <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
     <p style="text-align: justify;">
       The script will download and save Split-MNIST and Split-CIFAR100 in the <code>data/</code> folder.
       You can download TinyImageNet from <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
     </p>
 
-    <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>
     <p style="text-align: justify;">Training results are saved in the <code>results/</code> directory and optionally visualized with Weights & Biases.</p>
 
     <hr style="margin: 40px 0;">

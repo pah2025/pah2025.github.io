@@ -81,7 +81,7 @@
 
   <div class="container">
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
-    <p>
+    <p style="text-align: justify;">
       Continual learning (CL) aims to learn a sequence of tasks without forgetting prior knowledge, but gradient updates for a new task often overwrite the weights learned earlier, causing catastrophic forgetting (CF). We propose Prototype-Augmented Hypernetworks (PAH), a framework where a single hypernetwork, conditioned on learnable task prototypes, dynamically generates task-specific classifier heads on demand. To mitigate forgetting, PAH combines cross-entropy with dual distillation losses, one to align logits and another to align prototypes, ensuring stable feature representations across tasks. Evaluations on Split-CIFAR100 and TinyImageNet demonstrate that PAH achieves state-of-the-art performance, reaching 74.5% and 63.7% accuracy with only 1.7% and 4.4% forgetting, respectively, surpassing prior methods without storing samples or heads.
     </p>
 
@@ -89,14 +89,14 @@
     <img src="./static/images/PAH_arch.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
 
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
-    <p>
+    <p style="text-align: justify;">
       In PAH, each task is represented by a learnable task prototype that encodes semantic and spatial information about the task’s classes. These prototypes are 2D feature grids (e.g., 10×10), initialized from resized training samples and optimized throughout training. They are not used for classification directly, but instead condition the hypernetwork to dynamically generate classifier heads.
     </p>
-    <p>
+    <p style="text-align: justify;">
       The task prototype for a given task is formed by concatenating the class prototypes and flattening them into a vector. This vector is then fed into the hypernetwork, which outputs the weights for the classifier head corresponding to that task. Prototypes are updated using KL-divergence losses to remain aligned with the evolving feature space.
     </p>
     
-    <p>
+    <p style="text-align: justify;">
       The figure below illustrates how prototypes encode each task and influence classifier generation:
     </p>
     <img src="./static/images/prototype_generation.png" alt="Prototype Learning Diagram" style="width: 80%; display: block; margin: 20px auto;">
@@ -115,13 +115,13 @@ pip install -r requirements.txt
     <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
 
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
-    <p>
+    <p style="text-align: justify;">
       The script will download and save Split-MNIST and Split-CIFAR100 in the <code>data/</code> folder.
       You can download TinyImageNet from <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
     </p>
 
     <p style="font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>
-    <p>Training results are saved in the <code>results/</code> directory and optionally visualized with Weights & Biases.</p>
+    <p style="text-align: justify;">Training results are saved in the <code>results/</code> directory and optionally visualized with Weights & Biases.</p>
 
     <hr style="margin: 40px 0;">
     <footer style="font-size: 12px; text-align: center;">

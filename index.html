@@ -115,15 +115,13 @@ pip install -r requirements.txt
 </code></pre>
 
     <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Usage</p>
-    <p style="text-align: justify;">
-      Edit <code>config/hyper2d.py</code> to customize dataset, backbone, prototype grid size, initialization strategy, network width, and training hyperparameters like learning rate and dropout. Then run:
-    </p>
+    <p>Edit the file <code>config/hyper2d.py</code> to set your desired configuration. This script allows you to customize various aspects of the training setup, including the dataset, model backbone, prototype size and initialization, architectural dimensions, and hyperparameters such as learning rate and dropout. Once configured, start training by running:</p>
     <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
 
     <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
     <p style="text-align: justify;">
-      Split-MNIST and Split-CIFAR100 are downloaded automatically to the <code>data/</code> directory. TinyImageNet must be manually downloaded from 
-      <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
+      The script will automatically download and save Split-MNIST and Split-CIFAR100 in the <code>data/</code> folder if they are not already present.
+      You can download TinyImageNet from <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>. This dataset is not automatically downloaded by the script.
     </p>
 
     <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>

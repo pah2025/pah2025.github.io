@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAH: Prototype-Augmented Hypernetworks for Continual Learning</title>
+  <link rel="stylesheet" href="./static/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="./static/css/index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <meta name="description" content="Project page for 'Prototype-Augmented Hypernetworks for Continual Multitask Learning'" />
+  <link rel="icon" href="./static/images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+        <img src="./static/images/PAH_logo.png" alt="PAH Logo" style="width: 120px; height: auto;">
+        <h3 class="title is-3 publication-title" style="margin: 0; max-width: 600px; text-align: center;">
+          Prototype-Augmented Hypernetworks for Continual Multitask Learning
+        </h3>
+        </div>
+
+        <br><br>
+
+        <div class="is-size-5 publication-authors" style="text-align: center; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <div class="author-block">Neil De La Fuente<sup>1,2*</sup></div>
+            <div class="author-block">María Pilligua<sup>1*</sup></div>
+            <div class="author-block">Daniel Vidal<sup>1</sup></div>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+            <div class="author-block">Albin Soutif<sup>1</sup></div>
+            <div class="author-block">Cecilia Curreli<sup>2,3</sup></div>
+            <div class="author-block">Daniel Cremers<sup>2,3</sup></div>
+            <div class="author-block">Andrey Barsky<sup>1</sup></div>
+          </div>
+        </div>
+
+        <div class="is-size-5 publication-authors" style="text-align: center; margin-top: 5px;">
+          <span><sup>1</sup>Computer Vision Center</span> &nbsp;&nbsp;
+          <span><sup>2</sup>TUM</span> &nbsp;&nbsp;
+          <span><sup>3</sup>Munich Center for Machine Learning</span>
+        </div>
+
+        <br><br><br>
+
+        <div class="column has-text-centered">
+          <div class="publication-links">
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2505.07450" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/pah2025/PAH" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://www.latinxinai.org/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <img src="./static/images/LXAI_logo.png" alt="LXAI Logo" style="height: 1.2em;">
+                </span>
+                <span>LatinX in AI</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Abstract</p>
+    <p style="text-align: justify;">
+      Continual learning (CL) aims to learn a sequence of tasks without forgetting prior knowledge, but gradient updates for a new task often overwrite previously learned weights, causing catastrophic forgetting. PAH (Prototype-Augmented Hypernetworks) solves this by using a hypernetwork that generates task-specific classifier heads conditioned on learnable task prototypes. It combines cross-entropy with dual distillation losses for stable learning and achieves state-of-the-art results on benchmarks like Split-CIFAR100 and TinyImageNet, without relying on rehearsal buffers.
+    </p>
+
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">How It Works</p>
+    <p style="text-align: justify;">
+      PAH uses a single hypernetwork shared across all tasks. This hypernetwork takes as input a learnable prototype that represents a given task and outputs the weights for a task-specific classifier. During training, both the prototype and the shared feature extractor are updated. During inference, only the current task prototype is needed to generate the classifier head.
+    </p>
+
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Why It Works</p>
+    <p style="text-align: justify;">
+      Prototypes serve as compact, semantically meaningful representations of tasks, initialized using actual training data and optimized to remain aligned with the evolving feature space. This alignment ensures that the hypernetwork can always produce accurate classifier heads, even without explicit task identity or replay memory.
+    </p>
+
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
+    <img src="./static/images/PAH_arch.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
+
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
+    <p style="text-align: justify;">
+      Each task has a prototype grid (e.g., 10×10) formed by stacking class-level feature maps. These grids are flattened and fed into the hypernetwork to generate the classification head. They are optimized using a KL-divergence loss to preserve semantic alignment over time.
+    </p>
+    <img src="./static/images/prototype_generation.png" alt="Prototype Learning Diagram" style="width: 80%; display: block; margin: 20px auto;">
+
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Benchmark Comparison</p>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse: collapse;">
+        <thead style="background-color: #e0e0e0;">
+          <tr>
+            <th style="border: 1px solid #999; padding: 8px;">Method</th>
+            <th style="border: 1px solid #999; padding: 8px;">Split-CIFAR100 Acc</th>
+            <th style="border: 1px solid #999; padding: 8px;">Split-CIFAR100 Forget</th>
+            <th style="border: 1px solid #999; padding: 8px;">TinyImageNet Acc</th>
+            <th style="border: 1px solid #999; padding: 8px;">TinyImageNet Forget</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #999; padding: 8px;">PAH (Ours)</td>
+            <td style="border: 1px solid #999; padding: 8px;">74.5%</td>
+            <td style="border: 1px solid #999; padding: 8px;">1.7%</td>
+            <td style="border: 1px solid #999; padding: 8px;">63.7%</td>
+            <td style="border: 1px solid #999; padding: 8px;">4.4%</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #999; padding: 8px;">DER++</td>
+            <td style="border: 1px solid #999; padding: 8px;">67.9%</td>
+            <td style="border: 1px solid #999; padding: 8px;">10.5%</td>
+            <td style="border: 1px solid #999; padding: 8px;">52.1%</td>
+            <td style="border: 1px solid #999; padding: 8px;">15.8%</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #999; padding: 8px;">PASS</td>
+            <td style="border: 1px solid #999; padding: 8px;">70.3%</td>
+            <td style="border: 1px solid #999; padding: 8px;">7.2%</td>
+            <td style="border: 1px solid #999; padding: 8px;">58.2%</td>
+            <td style="border: 1px solid #999; padding: 8px;">9.9%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Installation</p>
+    <pre><code>git clone https://github.com/pah2025/PAH
+cd PAH
+python -m venv env
+source env/bin/activate  # Or env\Scripts\activate on Windows
+pip install -r requirements.txt
+</code></pre>
+
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Usage</p>
+    <p style="text-align: justify;">
+      Edit <code>config/hyper2d.py</code> to customize dataset, backbone, prototype grid size, initialization strategy, network width, and training hyperparameters like learning rate and dropout. Then run:
+    </p>
+    <pre><code>python train_hyper2d.py config/hyper2d.py</code></pre>
+
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Data</p>
+    <p style="text-align: justify;">
+      Split-MNIST and Split-CIFAR100 are downloaded automatically to the <code>data/</code> directory. TinyImageNet must be manually downloaded from 
+      <a href="https://paperswithcode.com/dataset/tiny-imagenet" target="_blank">here</a>.
+    </p>
+
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Results</p>
+    <p style="text-align: justify;">Training results are saved in the <code>results/</code> directory and can be monitored using Weights & Biases.</p>
+
+    <hr style="margin: 40px 0;">
+    <footer style="font-size: 12px; text-align: center;">
+      Template inspired by <a href="https://hypernvd.github.io" target="_blank">HyperNVD</a>
+    </footer>
+  </div>
+</body>
+</html>

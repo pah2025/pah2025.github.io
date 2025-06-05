@@ -92,16 +92,16 @@
       Prototypes serve as compact, semantically meaningful representations of tasks, initialized using actual training data and optimized to remain aligned with the evolving feature space. This alignment ensures that the hypernetwork can always produce accurate classifier heads, even without explicit task identity or replay memory.
     </p>
 
-    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
+    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Model Architecture</p>
     <img src="./static/images/PAH_arch.png" alt="PAH Architecture" style="width: 80%; display: block; margin: 20px auto;">
 
-    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
+    <p style="color: #7274b7; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Learnable Task Prototypes</p>
     <p style="text-align: justify;">
       Each task has a prototype grid (e.g., 10×10) formed by stacking class-level feature maps. These grids are flattened and fed into the hypernetwork to generate the classification head. They are optimized using a KL-divergence loss to preserve semantic alignment over time.
     </p>
     <img src="./static/images/prototype_generation.png" alt="Prototype Learning Diagram" style="width: 80%; display: block; margin: 20px auto;">
 
-    <p style="color: #6b9612; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Benchmark Comparison</p>
+    <p style="color: #f4bcbc; font-size: 1.5em; font-weight: bold; margin-top: 40px; margin-bottom: 20px;">Benchmark Comparison</p>
     <div style="overflow-x:auto;">
       <img src="./static/images/benchmark.png" alt="Benchmark Comparison" style="width: 80%; display: block; margin: 20px auto;">
     </div>
